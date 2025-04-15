@@ -1,4 +1,5 @@
 import 'package:elite77/customize/appbar.dart';
+import 'package:elite77/routing/routes.dart';
 import 'package:flutter/material.dart';
 
 class EquipoVista extends StatefulWidget {
@@ -13,69 +14,80 @@ class _EquipoVistaState extends State<EquipoVista> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(currentRoute: ModalRoute.of(context)?.settings.name ?? ''),
-
-      body: SingleChildScrollView( // Permite desplazamiento
+      body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(right: 100.0, left: 100),
           child: Column(
             children: [
-              _buildExpansionTile(title: "Tarifa 1", content: "Contenido 1", precio: "60€"),
-              _buildExpansionTile(title: "Tarifa 2", content: "Contenido 2", precio: "70€"),
-              _buildExpansionTile(title: "Tarifa 3", content: "Contenido 3", precio: "80€"),
-              _buildExpansionTile(title: "Tarifa 4", content: "Contenido 4", precio: "90€"),
+              Padding(
+                padding: const EdgeInsets.only(top: 33.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, Routes.menu);
+                  },
+                  child: Image.asset(
+                    'lib/assets/logos/elite_box_TEAM_ROJO.png',
+                    width: 170,
+                    height: 85,
+                  ),
+                ),
+              ),
+              // Primera fila con imagen a la izquierda y texto a la derecha
+              Padding(
+                padding: const EdgeInsets.only(top: 100.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image.asset(
+                      "lib/assets/images/equipo/EXTREMboxingfitness-43-min-1.jpg", // Cambia esta URL por tu imagen
+                      width: 150,
+                      height: 150,
+                      fit: BoxFit.cover,
+                    ),
+                    const SizedBox(width: 50), // Espacio entre la imagen y el texto
+                    const Expanded(
+                      child: Text(
+                        "Albert, desde pequeño, vive por y para el deporte. Su objetivo es poder transmitir y enseñar todo lo que él ha aprendido y la experiencia adquirida en todo este tiempo, demostrando que el boxeo no solo es un deporte, sino un estilo de vida.\nEmpezó en el mundo del boxeo y la condición física a los 7 años. Después de más de 30 combates amateur, con 22 años da el salto al boxeo profesional y cierra el año 2024 con un récord de 4 combates y 4 victorias.",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 32), // Espacio entre las filas
+              // Segunda fila con imagen a la izquierda y texto a la derecha
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image.asset(
+                      "lib/assets/images/equipo/hgjhgj-scaled.jpg", // Cambia esta URL por tu imagen
+                      width: 150,
+                      height: 150,
+                      fit: BoxFit.cover,
+                    ),
+                    const SizedBox(width: 16), // Espacio entre la imagen y el texto
+                    const Expanded(
+                      child: Text(
+                        "Amante del boxeo desde los 12 años, actualmente con 20 peleas en el ámbito amataur. María es todo un ejemplo de esfuerzo y superación, dedicando cada día a aprender los fundamentos y pulir su técnica.\nAmante del boxeo desde los 12 años, actualmente con 20 peleas en el ámbito amataur. María es todo un ejemplo de esfuerzo y superación, dedicando cada día a aprender los fundamentos y pulir su técnica.",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  // Método para crear botones de navegación
-  Widget _navButton(BuildContext context, String route, String text) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 50), // Margen horizontal (izquierda y derecha)
-      child: TextButton(
-        onPressed: () => Navigator.pushNamed(context, route),
-        child: Text(text, style: const TextStyle(color: Colors.white, fontSize: 19.5)),
-      ),
-    );
-  }
-
-
-  // Widget para las tarifas con ExpansionTile
-  Widget _buildExpansionTile({required String title, required String content, required String precio}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 36.0, left: 150, right: 100), // Espacio entre cada ExpansionTile
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10), // Bordes redondeados para la imagen
-            child: Text(
-              precio,
-              style: const TextStyle(fontSize: 50),
-            ),
-          ),
-          const SizedBox(width: 16), // Espacio entre la imagen y el ExpansionTile
-          Expanded(
-            child: ExpansionTile(
-              title: Text(
-                title,
-                style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(16.0),
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    content.trim(),
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

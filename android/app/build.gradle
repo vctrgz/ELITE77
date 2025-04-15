@@ -6,6 +6,7 @@ plugins {
 }
 
 android {
+    namespace "dev.fluttercommunity.plus.android_intent_plus"
     namespace = "com.example.elite77"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion

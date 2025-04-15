@@ -1,5 +1,4 @@
 import 'package:elite77/customize/appbar.dart';
-import 'package:elite77/pages/clases.dart';
 import 'package:elite77/routing/routes.dart';
 import 'package:flutter/material.dart';
 
@@ -28,14 +27,17 @@ class _HorarioVistaState extends State<HorarioVista> {
           ),
           child: Column(children: [
             SizedBox(height: constraints.maxHeight * 0.05),
-            const Text(
-              "ELITE 77",
-              style: TextStyle(
-                fontSize: 50,
-                fontWeight: FontWeight.bold,
-                color: Colors.yellow,
+            GestureDetector(
+                onTap: () {
+                  // Redirige a la nueva pantalla
+                  Navigator.pushNamed(context, Routes.menu);
+                },
+                child: Image.asset(
+                  'lib/assets/logos/elite_box_TEAM_ROJO.png',
+                  width: 170,  // Ajusta el ancho
+                  height: 85,  // Ajusta la altura
+                ),
               ),
-            ),
             SizedBox(height: constraints.maxHeight * 0.02), // Espaciado
             Expanded(
               child: buildTable(constraints),
@@ -70,7 +72,7 @@ class _HorarioVistaState extends State<HorarioVista> {
       "20:00"
     ];
 
-    double cellHeight = constraints.maxHeight * 0.065;
+    double cellHeight = constraints.maxHeight * 0.0625;
 
     Map<String, Color> cellColors = {
       "WOD&BOX": const Color.fromARGB(189, 255, 255, 255),
@@ -173,7 +175,7 @@ class _HorarioVistaState extends State<HorarioVista> {
 
     return Center(
       child: SizedBox(
-        width: constraints.maxWidth * 0.9,
+        width: constraints.maxWidth * 0.85,
         height: constraints.maxHeight * 0.8,
         child: Table(
           border: TableBorder.all(color: Colors.white, width: 1),
@@ -284,7 +286,8 @@ class _HorarioVistaState extends State<HorarioVista> {
             style: TextStyle(
                 fontSize: isSplit ? 11 : 11, 
                 fontWeight: FontWeight.bold, 
-                color: textColor
+                color: textColor,
+                fontFamily: 'Schyler'
               ),
             textAlign: TextAlign.center,
           ),

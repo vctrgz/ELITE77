@@ -24,83 +24,121 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         title: Padding(
-          padding: const EdgeInsets.only(top: 16, left: 50),
+          padding: const EdgeInsets.only(top: 16),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween, // Distribuye los elementos
             children: [
-              // Título "ELITE 77" alineado a la izquierda
-              const Text(
-                "ELITE 77",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.amber),
+              // LOGO alineado a la izquierda
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.menu);
+                },
+                child: Image.asset(
+                  'lib/assets/logos/elite_box_TEAM_ROJO.png',
+                  width: 100, 
+                  height: 50,
+                ),
               ),
+              // Botones de navegación con Wrap para adaptabilidad
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 180),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _navButton(context, Routes.equipo, "EQUIPO"),
-                      _navButton(context, Routes.horario, "HORARIO"),
-                      _navButton(context, Routes.clases, "CLASES", arguments: {'selectedTitle': null, 'shouldScroll': false}),
-                      _navButton(context, Routes.tarifas, "TARIFAS"),
-                      _webButton(context, "WEB"),
-                      _webButton(context, "DARME DE ALTA"),                    ],
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      double availableWidth = constraints.maxWidth;
+                      double spacing = 0; // Ajusta el espacio según el ancho
+                      double fontSize = 19.5; // Valor por defecto de la fuente
+
+                      // Ajuste de espaciado y tamaño de la letra según el ancho
+                      if (availableWidth > 1000) {
+                        spacing = 50;
+                        fontSize = 19.5; // Letra más grande en pantallas grandes
+                      } else if (availableWidth > 900 && availableWidth <= 1000) {
+                        spacing = 40;
+                        fontSize = 19; // Letra ligeramente más grande
+                      } else if (availableWidth > 800 && availableWidth <= 900) {
+                        spacing = 30;
+                        fontSize = 18.5; // Letra ligeramente más grande
+                      }  else if (availableWidth > 700 && availableWidth <= 800) {
+                        spacing = 20;
+                        fontSize = 18; // Letra mediana
+                      } else if (availableWidth <= 700) {
+                        spacing = 10;
+                        fontSize = 17.5; // Letra más pequeña en pantallas muy pequeñas
+                      }
+                      return Wrap(
+                        alignment: WrapAlignment.center,
+                        spacing: spacing, // Espaciado dinámico
+                        runSpacing: 5,
+                        children: [
+                          _navButton(context, Routes.equipo, "EQUIPO", fontSize: fontSize),
+                          _navButton(context, Routes.horario, "HORARIO", fontSize: fontSize),
+                          _navButton(context, Routes.clases, "CLASES",
+                              arguments: {'selectedTitle': null, 'shouldScroll': false}, fontSize: fontSize),
+                          _navButton(context, Routes.tarifas, "TARIFAS", fontSize: fontSize),
+                          _webButton(context, "WEB", fontSize: fontSize),
+                          _webButton(context, "DARME DE ALTA", fontSize: fontSize),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ),
             ],
           ),
-        ),
+        )
       ),
     );
   }
 
-  Widget _navButton(BuildContext context, String route, String text, {Map<String, dynamic>? arguments}) {
-  String currentRoute = ModalRoute.of(context)?.settings.name ?? '';
-  bool isActive = currentRoute == route;
+  Widget _navButton(BuildContext context, String route, String text, {Map<String, dynamic>? arguments, double fontSize = 19.5}) {
+    String currentRoute = ModalRoute.of(context)?.settings.name ?? '';
+    bool isActive = currentRoute == route;
 
-  return Padding(
-    padding: const EdgeInsets.only(right: 50), // Margen derecho
-    child: TextButton(
+    return TextButton(
       onPressed: () {
         if (!isActive) {
           Navigator.pushNamed(context, route, arguments: arguments ?? {});
         }
       },
       child: Column(
-        mainAxisSize: MainAxisSize.min, // Ajusta el tamaño al contenido
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             text,
             style: TextStyle(
               color: isActive ? Colors.amber : Colors.white,
-              fontSize: isActive ? 20 : 19.5,
+              fontSize: isActive ? fontSize + 0.5 : fontSize,
               fontWeight: FontWeight.bold,
             ),
           ),
-          if (isActive) // Muestra la línea solo si está activa
+          if (isActive)
             Container(
-              margin: const EdgeInsets.only(top: 3), // Espacio entre texto y subrayado
-              height: 2.8, // Grosor de la línea
-              width: text.length * 13.0, // Ancho proporcional al texto
-              color: Colors.amber, // Color del subrayado
+              margin: const EdgeInsets.only(top: 3),
+              height: 2.8,
+              width: text.length * 13.0,
+              color: Colors.amber,
             ),
         ],
       ),
-    ),
-  );
-}
+    );
+  }
 
-Widget _webButton(BuildContext context, String text) {
+  Widget _webButton(BuildContext context, String text, {double fontSize = 19.5}) {
     final appConnec = AppConnec();
-    return Padding(
-      padding: const EdgeInsets.only(right: 50), // Margen horizontal (izquierda y derecha)
-      child: TextButton(
-        onPressed: () => appConnec.openUrl("https://www.elite77.es/"),
-        child: Text(text, style: const TextStyle(color: Colors.white, fontSize: 19.5, fontWeight: FontWeight.bold,)),
+    return TextButton(
+      onPressed: () => appConnec.openUrlInChrome("https://www.elite77.es/"),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: fontSize,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
+
   @override
   Size get preferredSize => const Size.fromHeight(70.0);
 }

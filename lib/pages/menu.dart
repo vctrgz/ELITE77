@@ -26,10 +26,10 @@ class _HomeVistaState extends State<HomeVista> {
         mainAxisSpacing: 100,
         children: [
           _buildButton("EQUIPO", () => Navigator.pushNamed(context, Routes.equipo, arguments: {})),
-          _buildButton("HORARIOS", () => Navigator.pushNamed(context, Routes.horario, arguments: {}), imageUrl: "lib/assets/PHOTO-2025-03-02-21-36-25.jpg"),
+          _buildButton("HORARIOS", () => Navigator.pushNamed(context, Routes.horario, arguments: {}), imageUrl: "lib/assets/images/menu/PHOTO-2025-03-02-21-36-25.jpg"),
           _buildButton("CLASES", () => Navigator.pushNamed(context, Routes.clases, arguments: {'selectedTitle': null, 'shouldScroll': false},)),
           _buildButton("TARIFAS", () => Navigator.pushNamed(context, Routes.tarifas, arguments: {})),
-          _buildButton("WEB", () => appConnec.openUrl("https://www.elite77.es/")),
+          _buildButton("WEB", () => appConnec.openUrlInChrome("https://www.elite77.es/")),
           _buildButton("DARME DE ALTA", appConnec.openExternalApp),
         ],
       ),
@@ -45,7 +45,7 @@ class _HomeVistaState extends State<HomeVista> {
       borderRadius: BorderRadius.circular(15), // Bordes redondeados
       image: imageUrl != null
           ? DecorationImage(
-              image: NetworkImage(imageUrl),  // Usando imageUrl proporcionado
+              image: AssetImage(imageUrl),  // Usando imageUrl proporcionado
               fit: BoxFit.cover, // Ajusta la imagen al botón
             )
           : null,

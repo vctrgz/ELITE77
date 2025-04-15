@@ -1,24 +1,31 @@
+import 'package:android_intent_plus/android_intent.dart';
+import 'package:android_intent_plus/flag.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AppConnec{
+class AppConnec {
 
   // Método para abrir una URL
-  void openUrl(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'No se pudo abrir $url';
-    }
+  Future<void> openUrlInChrome(String url) async {
+    final intent = AndroidIntent(
+      action: 'action_view',  // Acción para abrir una URL
+      package: 'com.android.chrome',  // Paquete de Chrome
+      data: Uri.encodeFull(url),  // Codificación de la URL
+      flags: <int>[Flag.FLAG_ACTIVITY_NEW_TASK],  // Abrir en una nueva tarea
+    );
+    await intent.launch();  // Lanza el intento
   }
 
+
   // Método para abrir otra aplicación en Android
-  void openExternalApp() async {
-    const packageName = "com.aimfighter.mainapp"; // Reemplazar con el paquete real
-    final Uri uri = Uri.parse("intent://#Intent;package=$packageName;end;");
-    if (await canLaunch(uri.toString())) {
-      await launch(uri.toString());
+  Future<void> openExternalApp() async {
+    const String packageName = "com.aimfighter.mainapp"; // Paquete de la aplicación
+    final Uri uri = Uri.parse("android-app://$packageName");
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
     } else {
       print("No se pudo abrir la aplicación externa");
     }
   }
+
 }
